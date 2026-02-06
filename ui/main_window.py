@@ -45,6 +45,8 @@ class MainWindow(QMainWindow):
         self._cards: dict[str, CryptoCard] = {}
         self._edit_mode = False
 
+        self._last_connection_state = None
+
         # Core components
         self._settings_manager = get_settings_manager()
         self._market_controller = MarketDataController(self)
@@ -209,6 +211,11 @@ class MainWindow(QMainWindow):
     def _on_connection_state_changed(self, state: str, message: str, retry_count: int):
         for card in self._cards.values():
             card.set_connection_state(state)
+
+        # hack fix
+        if self._last_connection_state  == 'reconnecting' and state == 'connecting':
+            self._market_controller.set_proxy()
+        self._last_connection_state = state
 
     def _on_proxy_changed(self):
         self._market_controller.set_proxy()

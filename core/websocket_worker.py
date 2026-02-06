@@ -54,7 +54,7 @@ class BaseWebSocketWorker(QThread):
         self._connection_start_time = 0
         self._total_reconnect_count = 0
         self._last_error = ""
-        self._connection_timeout = 60  # seconds
+        self._connection_timeout = 5  # seconds
         self._ping_interval = 20  # seconds
         self._main_task = None
 
